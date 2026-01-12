@@ -1,5 +1,7 @@
 #include<iostream>
 #include<iomanip>
+#include<fstream>
+
 bool check=true;
 using namespace std;
 class Employee{
@@ -61,11 +63,41 @@ public:
         cout<<setw(10)<<"ID"<<setw(10)<<"Name"<<setw(10)<<"Gender"<<setw(10)<<"Salary"<<endl;
 
     }
+    // write
+    void writeToFile(ofstream &out){
+        out<<id<<" "<<name<<" "<<gender<<" "<<salary<<endl;
+    }
+    // read
+    void readToFile(ifstream &in){
+        in>>id>>name>>gender>>salary;
+    }
+
 };
+
+void saveToFile(Employee emp[] , int size){
+    ofstream out("Employees.txt");
+    for(int i=0 ;i<size; i++){
+        emp[i].writeToFile(out);
+    }
+    out.close();
+}
+
+int loadFromFile(Employee emp[]){
+    ifstream in("Employees.txt");
+    int i=0;
+    while (in>>ws && !in.eof()){
+        emp[i].readToFile(in);
+        i++;
+    }
+    in.close();
+    return i;
+    
+}
 
 int main(){
     Employee emp[10];
-    int size,op;
+    int size= loadFromFile(emp);
+    int op;
     do
     {
         /* code */
@@ -87,6 +119,7 @@ int main(){
                     cout<<"Enter Employee "<<i+1<<endl;
                     emp[i].input();
                 }
+                saveToFile(emp,size);
             }break;
             case 2:{
                 emp[0].Header();
@@ -142,6 +175,7 @@ int main(){
                         }
                         check=false;                      
                     }
+                  saveToFile(emp,size) ;
                 }break;
                 if (check==true){
                     cout<<"++++++ Id Not Found ++++++"<<endl;
@@ -160,6 +194,7 @@ int main(){
                         cout<<"==== Delete Success===="<<endl;
                         check=false;
                     }
+                    saveToFile(emp,size);
                 }break;
                 if(check==true){
                     cout<<"+++++ ID Not Found +++++"<<endl;
@@ -172,8 +207,9 @@ int main(){
                     emp[i].input();
                 }
                 size=size+new_size;
+                saveToFile(emp,size);
                 cout<<"*****Add Success*****"<<endl;
-            }
+            }break;
             case 7:{
                 for(int i=0 ;i<size ;i++){
                     for(int j=i+1 ;j<size ;j++){
@@ -183,11 +219,15 @@ int main(){
                         }
                     }
                 }
+                saveToFile(emp,size);
                 cout<<"===== Sort Success ====="<<endl;
-            }
+            }break;
         default:
+            cout<<"================="<<endl;
+            cout<<"Have a Good Day ."<<endl;
+            cout<<"================="<<endl;
             break;
         }
     } while (op!=0);
-    
+    return 0;
 };
