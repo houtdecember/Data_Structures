@@ -114,10 +114,30 @@ int main(){
         cout<<"Input Your Option :";cin>>op;
         switch (op){
             case 1:{
-                cout<<"Input Size Of Employee :";cin>>size;
-                for(int i=0 ;i<size ;i++){
-                    cout<<"Enter Employee "<<i+1<<endl;
-                    emp[i].input();
+                if (size>0) {
+                    string choice;
+                    cout<<"There are "<<size<<" existing employee(s). Overwrite file? (yes/no): "; cin>>choice;
+                    if (choice=="yes"){
+                        cout<<"Input Size Of Employee :";cin>>size;
+                        for(int i=0 ;i<size ;i++){
+                            cout<<"Enter Employee "<<i+1<<endl;
+                            emp[i].input();
+                        }
+                    } else {
+                        int addCount;
+                        cout<<"Input Number Of New Employees To Add :";cin>>addCount;
+                        for(int i=size ;i<size+addCount ;i++){
+                            cout<<"Enter Employee "<<i+1<<endl;
+                            emp[i].input();
+                        }
+                        size += addCount;
+                    }
+                } else {
+                    cout<<"Input Size Of Employee :";cin>>size;
+                    for(int i=0 ;i<size ;i++){
+                        cout<<"Enter Employee "<<i+1<<endl;
+                        emp[i].input();
+                    }
                 }
                 saveToFile(emp,size);
             }break;
@@ -131,10 +151,9 @@ int main(){
                 int s;
                 cout << "Input ID To Search : ";
                 cin >> s;
-                emp[0].Header();
-
                 for (int i = 0; i < size; i++) {
                     if (s == emp[i].getId()) {
+                    	emp[0].Header();
                         emp[i].output();   
                         check = false; 
                         break;  
@@ -142,10 +161,10 @@ int main(){
                 }
 
                 if (check) {
-                    cout << "Not Found" << endl;
+                	cout<<"\n++++++ Id Not Found ++++++\n"<<endl;
                 }
-                break;
-            }
+                
+            }break;
             case 4:{
                 int u;
                 string key;
@@ -171,16 +190,18 @@ int main(){
                         cout<<"Answer if U 1 2 Change Salary (yes/no):";cin>>key;
                         if(key=="yes"){
                             cout<<"Input New Salary :";cin>>newsalary;
-                           emp[i].setSalary(newsalary);
+                            emp[i].setSalary(newsalary);
                         }
-                        check=false;                      
+                        check=false;   
+						cout<<"\n==== Update Success====\n"<<endl;                   
                     }
                   saveToFile(emp,size) ;
-                }break;
+                 
+                }
                 if (check==true){
-                    cout<<"++++++ Id Not Found ++++++"<<endl;
+                    cout<<"\n++++++ Id Not Found ++++++\n"<<endl;
                 }                
-            }
+            }break;
             case 5:{
                 int d;
                 cout<<"Input ID To Delete :";cin>>d;
@@ -191,15 +212,15 @@ int main(){
                             
                         }
                         size--;
-                        cout<<"==== Delete Success===="<<endl;
+                        cout<<"\n==== Delete Success====\n"<<endl;
                         check=false;
                     }
                     saveToFile(emp,size);
-                }break;
-                if(check==true){
-                    cout<<"+++++ ID Not Found +++++"<<endl;
                 }
-            }
+                if(check==true){
+                    cout<<"\n+++++ ID Not Found +++++\n"<<endl;
+                }
+            }break;
             case 6:{
                 int new_size;
                 cout<<"Input New size :";cin>>new_size;
@@ -208,7 +229,7 @@ int main(){
                 }
                 size=size+new_size;
                 saveToFile(emp,size);
-                cout<<"*****Add Success*****"<<endl;
+                cout<<"\n======> Add Success <======\n"<<endl;
             }break;
             case 7:{
                 for(int i=0 ;i<size ;i++){
@@ -220,10 +241,10 @@ int main(){
                     }
                 }
                 saveToFile(emp,size);
-                cout<<"===== Sort Success ====="<<endl;
+                cout<<"\n=====> Sort Success <=====\n"<<endl;
             }break;
         default:
-            cout<<"================="<<endl;
+            cout<<"\n================="<<endl;
             cout<<"Have a Good Day ."<<endl;
             cout<<"================="<<endl;
             break;
